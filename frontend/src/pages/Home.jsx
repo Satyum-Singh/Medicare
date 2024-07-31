@@ -7,6 +7,7 @@ import icon03 from '../assets/images/icon03.png'
 
 import { Link } from 'react-router-dom'
 import { BsArrowRight } from 'react-icons/bs'
+import About from '../components/About/About';
 
 const Home = () => {
     return (
@@ -135,8 +136,18 @@ const Home = () => {
             </section>
 
 
-            {/* ==== ABOUT SECTION ===== */}
+            {/* ======= ABOUT SECTION ======== */}
+            <About />
 
+            {/* ======= SERVICES SECTION ======== */}
+            <section>
+                <div className="container">
+                    <div className="xl:w-[470px] mx-auto">
+                        <h2 className="heading text-center">Our Medical Services</h2>
+                        <p>World-class care for everyone. Our health System</p>
+                    </div>
+                </div>
+            </section>
         </>
     )
 }
