@@ -72,6 +72,9 @@ const quickLinks03 = [
 ]
 
 const Footer = () => {
+ 
+  const year = new Date().getFullYear();
+
   return (
     <footer className="pb-16 pt-10">
       <div className="container">
@@ -88,10 +91,11 @@ const Footer = () => {
                   key={index}
                   className="w-9 h-9 border border-solid border-[#181A1E] rounded-full flex items-center justify-center group  hover:bg-primaryColor hover:border-none">
                   {link.icon}
-                </Link>
-)}
+                </Link>)}
           </div>
         </div>
+
+        
       </div>
     </div>
 </footer >
