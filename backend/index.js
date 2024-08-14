@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import authRoute from "./Routes/auth.js";
 
 dotenv.config();
 
@@ -35,6 +36,9 @@ const connectDB = async () => {
 app.use(express.json());
 app.use(cookieParser()); // used to parse cookie coming with req or send cookie with a response as res.cookie() method.
 app.use(cors(corsOptions));
+
+// Routes
+app.use('/api/v1/auth',authRoute)
 
 app.listen(port, () => {
   connectDB();
