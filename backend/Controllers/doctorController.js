@@ -50,7 +50,7 @@ export const getSingleDoctor = async (req, res) => {
 export const getAllDoctor = async (req, res) => {
   try {
     const { query } = req.query;
-    let doctor;
+    let doctor = "No approved doctors till now";
     if (query) {
       // in below line it means either it will check for approved doctor or doctors with name. Regex and options'i' is used for case intensive search.
       doctor = await Doctor.find({
@@ -59,9 +59,12 @@ export const getAllDoctor = async (req, res) => {
           { name: { $regex: query, $options: "i" } },
           { specialization: { $regex: query, $options: "i" } },
         ],
-      }).select('-password');
+      }).select("-password");
+    } else {
+      doctor = await Doctor.find({ isApproved: "approved" }).select(
+        "-password"
+      ); // .select("-password") is used so as not to send sensitive data like password in response
     }
-    else doctor = await Doctor.find({}).select("-password"); // .select("-password") is used so as not to send sensitive data like password in response
     res.status(200).json({
       success: true,
       message: "Users found",
