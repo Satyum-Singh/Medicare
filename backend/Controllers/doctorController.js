@@ -59,6 +59,8 @@ export const getAllDoctor = async (req, res) => {
           { name: { $regex: query, $options: "i" } },
           { specialization: { $regex: query, $options: "i" } },
         ],
+        // this code searches for doctors in the database who have been approved (isApproved: "approved") 
+        // and whose name or specialization matches the query string (case-insensitive). The result is stored in the doctor variable.
       }).select("-password");
     } else {
       doctor = await Doctor.find({ isApproved: "approved" }).select(

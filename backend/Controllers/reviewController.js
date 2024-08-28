@@ -4,9 +4,16 @@ import Doctor from "../models/DoctorSchema.js";
 export const getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.find({});
-    res
-      .status(200)
-      .json({ succeess: true, message: "Successful", data: reviews });
+    if (reviews.length != 0) {
+      res
+        .status(200)
+        .json({ succeess: true, message: "Successful", data: reviews });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "No reviews till now. Be the first one 😊👇",
+      });
+    }
   } catch (err) {
     res.status(404).json({ success: false, message: "Not found" });
   }
