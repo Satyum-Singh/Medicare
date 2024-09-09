@@ -6,7 +6,7 @@ const initialState = {
     token:null 
 }
 
-const authContext = createContext(initialState); 
+export const authContext = createContext(initialState);
 // it will be used to share authentication state and function
 
 // Provider

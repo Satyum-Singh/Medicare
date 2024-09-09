@@ -1,5 +1,8 @@
-import { useState } from "react"
-import { Link } from 'react-router-dom'
+import { useState, useContext } from "react"
+import { Link, useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../config'
+import { toast } from 'react-toastify'
+import { authContext } from '../context/AuthContext.jsx'
 
 const Login = () => {
 
@@ -8,15 +11,56 @@ const Login = () => {
         password: ""
     })
 
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
+    const { dispatch } = useContext(authContext);
+
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const submitHandler = async event => {
+        event.preventDefault();
+        setLoading(true)
+        try {
+            const res = await fetch(`${BASE_URL}/auth/register`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application.json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.message);
+
+            dispatch({
+                type: 'LOGIN_SUCESS',
+                payload: {
+                    user: result.data,
+                    token: result.token,
+                    role: result.role
+                }
+            })
+
+            console.log(result, "Login data");
+
+            setLoading(false);
+            toast.success(result.message);
+            navigate('/home') // Now if res does'nt throw any error then useNavigate help us to direct us to the login page.
+
+        } catch (err) {
+            toast.error(err.message);
+            setLoading(false)
+        }
+
     }
 
     return (
         <section className="px-5 lg:px-0">
             <div className="max-w-[570px] md:p-10 w-full mx-auto rounded-lg shadow-md">
                 <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">Hello! <span className="text-primaryColor">Welcome</span> Back 👋😃</h3>
-                <form action="post" className="py-4 md:py-0">
+                <form onSubmit={submitHandler} action="post" className="py-4 md:py-0">
                     <div className="mb-5">
                         <input type="email" placeholder="Enter Your Email" name='email' value={formData.email} onChange={handleInputChange}
                             className="w-full px-4 py-3 border-b  border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer"
