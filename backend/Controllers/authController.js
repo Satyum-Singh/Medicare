@@ -78,7 +78,7 @@ export const login = async (req, res) => {
     if (doctor) user = doctor;
 
     // check whether if the user exists or not
-    if (!user) res.status(404).json({ message: "User not found" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     // Compare if password is correct or not
     const isPasswordMatch = await bcrypt.compare(
@@ -86,7 +86,9 @@ export const login = async (req, res) => {
       user.password
     );
     if (!isPasswordMatch)
-      res.status(400).json({ status: false, message: "Invalid Credentials" });
+      return res
+        .status(400)
+        .json({ status: false, message: "Invalid Credentials" });
     const token = generateToken(user);
     const { password, role, appointments, ...rest } = user._doc;
 

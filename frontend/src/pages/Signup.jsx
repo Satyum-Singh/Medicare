@@ -32,33 +32,33 @@ const Signup = () => {
     const handleFileInputChange = async (event) => {
         const file = event.target.files[0];
         const data = await uploadImageToCloudinary(file);
-        
+
         setPreviewURL(data.url);
         setSelectedFile(data.url);
-        setFormData({... formData,photo:data.url});
+        setFormData({ ...formData, photo: data.url });
     }
 
     const submitHandler = async event => {
         event.preventDefault();
         setLoading(true)
         try {
-            const res =  await fetch(`${BASE_URL}/auth/register`,{
+            const res = await fetch(`${BASE_URL}/auth/register`, {
                 method: 'post',
-                headers:{
-                    'Content-Type':'application.json'
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                body:JSON.stringify(formData)
+                body: JSON.stringify(formData)
             });
 
             const { message } = await res.json();
-            if(!res.ok) throw new Error(message);
+            if (!res.ok) throw new Error(message);
             setLoading(false);
             toast.success(message);
             navigate('/login') // Now if res does'nt throw any error then useNavigate help us to direct us to the login page.
 
         } catch (err) {
-           toast.error(err.message);
-           setLoading(false)
+            toast.error(err.message);
+            setLoading(false)
         }
 
     }
@@ -168,9 +168,9 @@ const Signup = () => {
                             </div>
 
                             <div className="mt-7">
-                                <button 
-                                    disabled={loading && true} 
-                                    type="submit" 
+                                <button
+                                    disabled={loading && true}
+                                    type="submit"
                                     className="w-full bg-primaryColor text-white text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 ">
                                     {loading ? <HashLoader size={35} color="#ffffff" /> : 'Register'}
                                 </button>

@@ -23,12 +23,12 @@ const Login = () => {
         event.preventDefault();
         setLoading(true)
         try {
-            const res = await fetch(`${BASE_URL}/auth/register`, {
+            const res = await fetch(`${BASE_URL}/auth/login`, {
                 method: 'post',
                 headers: {
-                    'Content-Type': 'application.json'
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
             });
 
             const result = await res.json();
@@ -48,12 +48,11 @@ const Login = () => {
             setLoading(false);
             toast.success(result.message);
             navigate('/home') // Now if res does'nt throw any error then useNavigate help us to direct us to the login page.
-
+            return;
         } catch (err) {
             toast.error(err.message);
             setLoading(false)
         }
-
     }
 
     return (
