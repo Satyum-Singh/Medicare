@@ -1,5 +1,4 @@
 import signupImg from '../assets/images/signup.gif';
-import avatar from "../assets/images/doctor-img01.png";
 import uploadImageToCloudinary from '../utils/uploadCloudinary.js';
 import HashLoader from 'react-spinners/HashLoader'
 
@@ -55,7 +54,6 @@ const Signup = () => {
             setLoading(false);
             toast.success(message);
             navigate('/login') // Now if res does'nt throw any error then useNavigate help us to direct us to the login page.
-
         } catch (err) {
             toast.error(err.message);
             setLoading(false)

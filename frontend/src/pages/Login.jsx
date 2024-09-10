@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../config'
 import { toast } from 'react-toastify'
 import { authContext } from '../context/AuthContext.jsx'
+import HashLoader from 'react-spinners/HashLoader'
 
 const Login = () => {
 
@@ -35,7 +36,7 @@ const Login = () => {
             if (!res.ok) throw new Error(result.message);
 
             dispatch({
-                type: 'LOGIN_SUCESS',
+                type: "LOGIN_SUCCESS",
                 payload: {
                     user: result.data,
                     token: result.token,
@@ -48,7 +49,6 @@ const Login = () => {
             setLoading(false);
             toast.success(result.message);
             navigate('/home') // Now if res does'nt throw any error then useNavigate help us to direct us to the login page.
-            return;
         } catch (err) {
             toast.error(err.message);
             setLoading(false)
@@ -75,7 +75,7 @@ const Login = () => {
                     </div>
 
                     <div className="mt-7">
-                        <button type="submit" className="w-full bg-primaryColor text-white text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 ">Login</button>
+                        <button type="submit" className="w-full bg-primaryColor text-white text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 ">{loading ? <HashLoader size={25} color='#fff' /> : 'Login'}</button>
                     </div>
 
                     <p className="mt-5 text-center text-textColor">
