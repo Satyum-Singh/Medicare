@@ -67,7 +67,9 @@ export const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(userId);
     if (!user)
-      return res.status(404).json({ success: true, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
 
     const { password, ...rest } = user._doc; // _doc is user for directly extracting the core information that is present in a object or a document
     res.status(200).json({
@@ -85,15 +87,23 @@ export const getUserProfile = async (req, res) => {
 export const getMyAppointments = async (req, res) => {
   try {
     // Step 1 : retrieve appointments from bookin for specific user
-    const bookings = await Booking.find({user:req.userId})
+    const bookings = await Booking.find({ user: req.userId });
 
     // Step 2 : extract doctor ids form appointment booking
-    const doctorIds = bookings.map(el=>el.doctor.id)
+    const doctorIds = bookings.map((el) => el.doctor.id);
 
     // Step 3 : retrieve doctors using doctor ids
-    const doctors = await Doctor.find({_id:{$in:doctorIds}}).select('-password')
+    const doctors = await Doctor.find({ _id: { $in: doctorIds } }).select(
+      "-password"
+    );
 
-    res.status(200).json({success:true,message:"Appointments are getting", data:doctors})
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Appointments are getting",
+        data: doctors,
+      });
   } catch (err) {
     res
       .status(500)

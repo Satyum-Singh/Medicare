@@ -59,7 +59,7 @@ export const getAllDoctor = async (req, res) => {
           { name: { $regex: query, $options: "i" } },
           { specialization: { $regex: query, $options: "i" } },
         ],
-        // this code searches for doctors in the database who have been approved (isApproved: "approved") 
+        // this code searches for doctors in the database who have been approved (isApproved: "approved")
         // and whose name or specialization matches the query string (case-insensitive). The result is stored in the doctor variable.
       }).select("-password");
     } else {
@@ -74,5 +74,28 @@ export const getAllDoctor = async (req, res) => {
     });
   } catch (err) {
     res.status(404).json({ success: false, message: "Not found" });
+  }
+};
+
+export const getDoctorProfile = async (req, res) => {
+  const doctorId = req.userId;
+  try {
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor)
+      return res
+        .status(404)
+        .json({ success: false, message: "Doctor not found" });
+
+    const { password, ...rest } = doctor._doc; // _doc is user for directly extracting the core information that is present in a object or a document
+    const appointments = await Booking.find({doctor:doctorId})
+    res.status(200).json({
+      success: true,
+      message: "Profile info is getting",
+      data: { ...rest },
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Something went wrong, cannot get" });
   }
 };
