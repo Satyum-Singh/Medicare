@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { token } from '../config.js'
+import { token } from '../config'
 
-const useFetchData = () => {
+const useFetchData = url => {
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -14,8 +14,8 @@ const useFetchData = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 const result = await res.json()
-                if(!res.ok){
-                    throw new Error(result.message+"🤢")
+                if (!res.ok) {
+                    throw new Error(result.message + "🤢")
                 }
 
                 setData(result.data)
@@ -30,7 +30,7 @@ const useFetchData = () => {
     }, [url])
 
     return {
-        data,loading,error,
+        data, loading, error,
     }
 }
 
