@@ -1,5 +1,5 @@
 import User from "../models/UserSchema.js";
-import BookingSchema from "../models/BookingSchema.js";
+import Booking from "../models/BookingSchema.js";
 import Doctor from "../models/DoctorSchema.js";
 
 export const updateUser = async (req, res) => {
@@ -86,7 +86,7 @@ export const getUserProfile = async (req, res) => {
 
 export const getMyAppointments = async (req, res) => {
   try {
-    // Step 1 : retrieve appointments from bookin for specific user
+    // Step 1 : retrieve appointments from booking for specific user
     const bookings = await Booking.find({ user: req.userId });
 
     // Step 2 : extract doctor ids form appointment booking
@@ -97,13 +97,11 @@ export const getMyAppointments = async (req, res) => {
       "-password"
     );
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Appointments are getting",
-        data: doctors,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Appointments are getting",
+      data: doctors,
+    });
   } catch (err) {
     res
       .status(500)

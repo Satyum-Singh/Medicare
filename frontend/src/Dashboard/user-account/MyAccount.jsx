@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react'
 import { authContext } from './../../context/AuthContext'
-import userImg from '../../assets/images/doctor-img01.png'
 import MyBookings from './MyBookings'
 import Profile from './Profile'
 
@@ -36,20 +35,19 @@ const MyAccount = () => {
               <div className="pb-[50px] px-[30px] rounded-md ">
                 <div className="flex items-center justify-center">
                   <figure className='w-[100px] h-[100px] rounded-full border-2 border-solid border-primaryColor'>
-                    <img src={userImg} alt="" className='w-full h-full rounded-full' />
+                    <img src={userData.photo} alt="" className='w-full h-full rounded-full' />
                   </figure>
                 </div>
 
                 <div className='text-center mt-4'>
                   <h3 className="text-headingColor font-bold text-[18px] leading-[30px]">
-                    Ayush Katoch
+                    {userData.name}
                   </h3>
                   <p className="text-textColor leading-6 font-medium text-[15px] ">
-                    example@gmail.com
+                    {userData.email}
                   </p>
                   <p className="text-textColor leading-6 font-medium ">
-                    Blood Type:
-                    <span className="ml-2 text-headingColor leading-8 text-[22px] ">O-</span>
+                    <span className="ml-2 text-headingColor leading-8 text-[22px] ">{userData.bloodType}</span>
                   </p>
                 </div>
 
@@ -71,7 +69,7 @@ const MyAccount = () => {
                 </div>
 
                 {tab === 'bookings' && <MyBookings />}
-                {tab === 'settings' && <Profile />}
+                {tab === 'settings' && <Profile user={userData} />}
 
               </div>
             </div>
