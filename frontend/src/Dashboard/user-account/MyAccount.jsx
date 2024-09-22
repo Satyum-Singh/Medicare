@@ -16,7 +16,6 @@ const MyAccount = () => {
 
   console.log(userData);
 
-
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
   }

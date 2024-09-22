@@ -3,24 +3,24 @@ import {
   getAllDoctor,
   getSingleDoctor,
   updateDoctor,
-  getDoctorProfile
+  getDoctorProfile,
 } from "../Controllers/doctorController.js";
 import express from "express";
 
-import { authenticate,restrict } from '../auth/verifyToken.js';
-import reviewRouter from './review.js'
+import { authenticate, restrict } from "../auth/verifyToken.js";
+import reviewRouter from "./review.js";
 
 const router = express.Router();
 
 // nested route
-router.use('/:doctorId/reviews',reviewRouter);
+router.use("/:doctorId/reviews", reviewRouter);
 
 // This is a dnamic route for getting a user by id
 router.get("/:id", getSingleDoctor);
 router.get("/", getAllDoctor);
-router.put("/:id", authenticate, restrict(["doctor"]),updateDoctor);
-router.delete("/:id", authenticate, restrict(["doctor"]),deleteDoctor);
+router.put("/:id", authenticate, restrict(["doctor"]), updateDoctor);
+router.delete("/:id", authenticate, restrict(["doctor"]), deleteDoctor);
 
-router.get("/profile/me",authenticate,restrict(['doctor']),getDoctorProfile)
+router.get("/profile/me", authenticate, restrict(["doctor"]), getDoctorProfile);
 
 export default router;

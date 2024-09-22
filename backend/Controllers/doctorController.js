@@ -1,4 +1,5 @@
 import Doctor from "../models/DoctorSchema.js";
+import Booking from "../models/BookingSchema.js"
 
 export const updateDoctor = async (req, res) => {
   const id = req.params.id;
@@ -79,13 +80,16 @@ export const getAllDoctor = async (req, res) => {
 
 export const getDoctorProfile = async (req, res) => {
   const doctorId = req.userId;
+  if(!doctorId){
+    return res.status(401).json({success:false,message:"Unauthorized: No user ID"});
+  }
   try {
     const doctor = await Doctor.findById(doctorId);
-    if (!doctor)
+    if (!doctor){
       return res
         .status(404)
         .json({ success: false, message: "Doctor not found" });
-
+    }
     const { password, ...rest } = doctor._doc; // _doc is user for directly extracting the core information that is present in a object or a document
     const appointments = await Booking.find({doctor:doctorId})
     res.status(200).json({
