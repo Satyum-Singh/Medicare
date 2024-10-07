@@ -70,7 +70,7 @@ const Dashboard = () => {
                         </span>
                       </div>
                       <p className='text__para font-[15px] lg:max-w-[390px] leading-6'>
-                        Doctor bio
+                        {data?.bio}
                       </p>
                     </div>
                   </div>
@@ -84,7 +84,7 @@ const Dashboard = () => {
 
                 </div>}
                 {tab === 'appointments' && <div>appointments</div>}
-                {tab === 'settings' && <Profile />}
+                {tab === 'settings' && <Profile doctorData={data} />}
               </div>
 
             </div>

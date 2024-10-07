@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AiOutlineDelete } from "react-icons/ai";
-import { uploadImageToCloudinary } from './../../utils/uploadCloudinary'
+import uploadImageToCloudinary from './../../utils/uploadCloudinary'
 import { BASE_URL, token } from './../../config'
 import { toast } from 'react-toastify';
 
+// eslint-disable-next-line react/prop-types
 const Profile = ({ doctorData }) => {
 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password:'',
+        password: '',
         phone: '',
         bio: '',
         gender: '',
@@ -20,6 +21,23 @@ const Profile = ({ doctorData }) => {
         timeSlots: [],
         about: '',
         photo: null
+    })
+
+    useEffect(() => {
+        setFormData({
+            name: doctorData?.name,
+            email: doctorData?.email,
+            phone: doctorData?.phone,
+            bio: doctorData?.bio,
+            gender: doctorData?.gender,
+            specialization: doctorData?.specialization,
+            ticketPrice: doctorData?.ticketPrice,
+            qualifications: doctorData?.qualifications,
+            experiences: doctorData?.experiences,
+            timeSlots: doctorData?.timeSlots,
+            about: doctorData?.about,
+            photo: doctorData?.photo
+        }, [doctorData])
     })
 
     const handleInputChange = e => {
@@ -35,17 +53,18 @@ const Profile = ({ doctorData }) => {
     const updateProfileHandler = async e => {
         e.preventDefault();
         try {
-            const res = await fetch(`${BASE_URL}/doctors/${doctorData._id}`,{
-                method:"PUT",
-                headers:{
-                    'content-type':'application/json',
-                    Authorization:`Bearer ${token}`
+            // eslint-disable-next-line react/prop-types
+            const res = await fetch(`${BASE_URL}/doctors/${doctorData._id}`, {
+                method: "PUT",
+                headers: {
+                    'content-type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(formData)
             })
 
             const result = await res.json()
-            if(!res.ok){
+            if (!res.ok) {
                 throw Error(result.message)
             }
             toast.success(result.message);
@@ -419,7 +438,7 @@ const Profile = ({ doctorData }) => {
                 </div>
 
                 <div className="mt-7">
-                    <button type='submit' onClick={updateProfileHandler} className="bg-primary text-white text-[18px] leading-[30px]  w-full py-3 px-4 rounded-lg ">Update Profile</button>
+                    <button type='submit' onClick={updateProfileHandler} className="bg-primaryColor text-white text-[18px] leading-[30px]  w-full py-3 px-4 rounded-lg ">Update Profile</button>
                 </div>
 
             </form>
