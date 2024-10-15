@@ -15,11 +15,11 @@ const useFetchData = url => {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 const result = await res.json()
+                // console.log(result.data);
                 if (!res.ok) {
-                    console.log(result);
+                    console.error(result);
                     throw new Error(result.message + "🤢")
                 }
-
                 setData(result.data)
             } catch (error) {
                 setError(error.message)

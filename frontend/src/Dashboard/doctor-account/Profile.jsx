@@ -4,7 +4,6 @@ import uploadImageToCloudinary from './../../utils/uploadCloudinary'
 import { BASE_URL, token } from './../../config'
 import { toast } from 'react-toastify';
 
-// eslint-disable-next-line react/prop-types
 const Profile = ({ doctorData }) => {
 
     const [formData, setFormData] = useState({
@@ -37,8 +36,8 @@ const Profile = ({ doctorData }) => {
             timeSlots: doctorData?.timeSlots,
             about: doctorData?.about,
             photo: doctorData?.photo
-        }, [doctorData])
-    })
+        })
+    }, [doctorData])
 
     const handleInputChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -46,14 +45,23 @@ const Profile = ({ doctorData }) => {
 
     const handleFileInputChange = async event => {
         const file = event.target.files[0];
-        const data = await uploadImageToCloudinary(file);
-        setFormData({ ...formData, photo: data?.url })
+        if (file) {
+            try {
+                const data = await uploadImageToCloudinary(file);
+                setFormData({ ...formData, photo: data?.url })
+            }
+            catch (error) {
+                console.error('Image upload failed', error);
+                toast.error('Image upload failed');
+            }
+        }
+
     }
 
     const updateProfileHandler = async e => {
         e.preventDefault();
+        console.log("Form data before update: ",formData)
         try {
-            // eslint-disable-next-line react/prop-types
             const res = await fetch(`${BASE_URL}/doctors/${doctorData._id}`, {
                 method: "PUT",
                 headers: {
@@ -68,8 +76,6 @@ const Profile = ({ doctorData }) => {
                 throw Error(result.message)
             }
             toast.success(result.message);
-
-
         } catch (err) {
             console.log(err.message);
         }

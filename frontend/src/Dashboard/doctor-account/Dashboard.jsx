@@ -13,7 +13,6 @@ const Dashboard = () => {
   const { data, loading, error } = useGetProfile(
     `${BASE_URL}/doctors/profile/me`
   );
-
   const [tab, setTab] = useState("overview")
 
   return (
@@ -49,7 +48,7 @@ const Dashboard = () => {
 
               <div className='mt-8'>
                 {tab === 'overview' && <div>
-                  <div className="flex items-center gap-4 mb-10">
+                  <div className="flex items-center gap-4 mb-20">
                     <figure className='max-w-[200px] max-h-[200px]'>
                       <img src={data?.photo} alt="" className='w-full' />
                     </figure>
