@@ -1,13 +1,42 @@
 import React, { useState } from 'react'
 import { AiFillStar } from 'react-icons/ai';
+import { useParams } from 'react-router-dom';
+import { BASE_URL, token} from '../../config'
+import { toast } from 'react-toastify';
 
 const FeedbackForm = () => {
     const [rating, setRating] = useState(0)
     const [hover, setHover] = useState(0)
-    const [review, setReview] = useState("")
+    const [reviewText, setReviewText] = useState("")
+    const [loading,setLoading] = useState(false)
+
+    const {id} = useParams()
 
     const handleSubmitReview = async e => {
         e.preventDefault()
+        setLoading(true)
+        try{
+            if(!rating || !reviewText){
+                setLoading(false)
+                toast.error('Rating & review fields are required')
+                const res = await fetch(`${BASE_URL}/doctors/${id}/reviews`,{
+                    method:'post',
+                    headers:{
+                        'Content-Type':'application/json',
+                        Authorization:`Bearer ${token}`
+                    },
+                    body: JSON.stringify({rating,reviewText})
+                })
+                const result = await res.json()
+                if(!res.ok){
+                    throw Error(result.message)
+                }
+                setLoading(false)
+                toast.success('Review submitted successfully')
+            }
+        }catch(err){
+
+        }
     }
 
     return (
@@ -47,7 +76,7 @@ const FeedbackForm = () => {
                     Share your feedback or suggestions*
                 </h3>
                 <textarea className='border border-solid border-[#0066ff34] focus:outline outline-primaryColor w-full px-4 py-3 rounded-md' rows="5" placeholder='Write your message ...'
-                    onChange={(e) => setReview(e.target.value)}>
+                    onChange={(e) => setReviewText(e.target.value)}>
                 </textarea>
             </div>
 
