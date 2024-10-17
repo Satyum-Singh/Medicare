@@ -7,6 +7,7 @@ import Error from '../../components/Error/Error';
 const DoctorList = () => {
 
     const { data: doctors, loading, error } = useFetchData(`${BASE_URL}/doctors`)
+    
 
     return (
         <>
